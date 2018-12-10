@@ -45,12 +45,13 @@ module.exports = function (keycloak) {
         try {
           keycloak.authenticated(request);
         } catch (err) {
-          console.log(err);
+          console.error(err);
         }
         response.redirect(cleanUrl);
       }).catch((err) => {
         keycloak.accessDenied(request, response, next);
-        console.error('Could not obtain grant code: ' + err);
+        console.error(`Error while loading ${request.path + request.query}:`);
+        console.error('Could not obtain grant code:', err, err.stack)
       });
   };
 };
